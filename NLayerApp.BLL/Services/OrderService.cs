@@ -18,6 +18,7 @@ namespace NLayerApp.BLL.Services
         {
             Database = uow;
         }
+
         public void MakeOrder(OrderDTO orderDto)
         {
             Phone phone = Database.Phones.Get(orderDto.PhoneId);
@@ -54,7 +55,7 @@ namespace NLayerApp.BLL.Services
             if (phone == null)
                 throw new ValidationException("Телефон не найден", "");
 
-            return new PhoneDTO { Company = phone.Company, Id = phone.Id, Name = phone.Name, Price = phone.Price };
+            return new PhoneDTO {Company = phone.Company, Id = phone.Id, Name = phone.Name, Price = phone.Price};
         }
 
         public void Dispose()

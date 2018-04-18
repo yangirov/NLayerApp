@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
+﻿using System.Collections.Generic;
 using System.Web.Mvc;
 using NLayerApp.BLL.Interfaces;
 using NLayerApp.BLL.DTO;
@@ -14,10 +11,12 @@ namespace NLayerApp.WEB.Controllers
     public class HomeController : Controller
     {
         IOrderService orderService;
+
         public HomeController(IOrderService serv)
         {
             orderService = serv;
         }
+
         public ActionResult Index()
         {
             IEnumerable<PhoneDTO> phoneDtos = orderService.GetPhones();
@@ -31,7 +30,7 @@ namespace NLayerApp.WEB.Controllers
             try
             {
                 PhoneDTO phone = orderService.GetPhone(id);
-                var order = new OrderViewModel { PhoneId = phone.Id };
+                var order = new OrderViewModel {PhoneId = phone.Id};
 
                 return View(order);
             }
@@ -40,12 +39,18 @@ namespace NLayerApp.WEB.Controllers
                 return Content(ex.Message);
             }
         }
+
         [HttpPost]
         public ActionResult MakeOrder(OrderViewModel order)
         {
             try
             {
-                var orderDto = new OrderDTO { PhoneId = order.PhoneId, Address = order.Address, PhoneNumber = order.PhoneNumber };
+                var orderDto = new OrderDTO
+                {
+                    PhoneId = order.PhoneId,
+                    Address = order.Address,
+                    PhoneNumber = order.PhoneNumber
+                };
                 orderService.MakeOrder(orderDto);
                 return Content("<h2>Ваш заказ успешно оформлен</h2>");
             }
@@ -53,8 +58,10 @@ namespace NLayerApp.WEB.Controllers
             {
                 ModelState.AddModelError(ex.Property, ex.Message);
             }
+
             return View(order);
         }
+
         protected override void Dispose(bool disposing)
         {
             orderService.Dispose();
